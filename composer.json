@@ -1,0 +1,8 @@
+{
+  "name": "openclerk/db",
+  "autoload": {
+    "psr-4": {
+      "Db\\": "src"
+    }
+  }
+}
