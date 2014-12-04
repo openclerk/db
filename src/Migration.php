@@ -75,6 +75,11 @@ class Migration {
       $migration->install($db, $log);
     }
 
+    // check we have a valid name
+    if (strlen($this->getName()) == 0 || strlen($this->getName()) > 255) {
+      throw new DbException("Invalid migration name '" . $this->getName() . "'");
+    }
+
     // and then install our own
     if ($this->apply($db)) {
       $log->log("Applied migration " . $this->getName());
