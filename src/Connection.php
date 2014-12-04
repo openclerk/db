@@ -13,13 +13,40 @@ namespace Db;
  */
 class Connection {
 
-  function __construct($database, $username, $password, $host = "localhost", $port = 3306) {
-    // TODO things, maybe lazily
+  var $pdo = null;
+
+  function __construct($database, $username, $password, $host = "localhost", $port = 3306, $timezone = false) {
+    // lazily store these settings for later (in getPDO())
+    $this->database = $database;
+    $this->username = $username;
+    $this->password = $password;
+    $this->host = $host;
+    $this->port = $port;
+    $this->timezone = $timezone;
   }
 
   function prepare($query) {
     // TODO things
     return new Query($this, $query);
   }
+
+  function getPDO() {
+    if ($this->pdo === null) {
+      // TODO escape string
+      // TODO add port number
+      // TODO not assume that all Db's are MySQL
+      $dsn = "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->database;
+      $this->pdo = new \PDO($dsn, $this->username, $this->password);
+
+      // set timezone if set
+      if ($this->timezone) {
+        $q = $this->prepare("SET timezone=?");
+        $q->execute(array($this->timezone));
+      }
+    }
+    return $this->pdo;
+  }
+
+  // TODO setAttribute()
 
 }
