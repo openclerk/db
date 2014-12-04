@@ -2,4 +2,4 @@
 
 namespace Db;
 
-class DbException extends Exception { }
+class DbException extends \Exception { }

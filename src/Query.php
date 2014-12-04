@@ -17,9 +17,17 @@ class Query {
     $this->query = $query;
   }
 
+  /**
+   * @return true on success
+   * @throws DbException on error with {@link PDOStatement#errorInfo()}.
+   */
   function execute($args = array()) {
     $this->cursor = $this->connection->getPDO()->prepare($this->query);
-    $this->cursor->execute($args);
+    if ($this->cursor->execute($args)) {
+      return true;
+    } else {
+      throw new DbException(implode(": ", $this->cursor->errorInfo()));
+    }
   }
 
   function fetch() {

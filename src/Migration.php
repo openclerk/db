@@ -10,9 +10,24 @@ namespace Db;
 class Migration {
 
   /**
+   * Cache migration table checks so we only do it once per query
+   */
+  static $checked_migrations_table = false;
+
+  /**
    * @return true if this migration is applied
    */
   function isApplied(Connection $db) {
+    // don't error if we don't have any migration parent table
+    if (!Migration::$checked_migrations_table) {
+      $base = new BaseMigration();
+      Migration::$checked_migrations_table = $base->isApplied($db);
+    }
+
+    if (!Migration::$checked_migrations_table) {
+      return false;
+    }
+
     $q = $db->prepare("SELECT * FROM migrations WHERE name=?");
     $q->execute(array($this->getName()));
 
@@ -39,7 +54,7 @@ class Migration {
    */
   function install(Connection $db, Logger $log) {
     // bail if we've already applied
-    if ($this->isApplied()) {
+    if ($this->isApplied($db)) {
       return;
     }
 
@@ -52,7 +67,7 @@ class Migration {
     if ($this->apply($db)) {
       $log->log("Applied migration " . $this->getName());
     } else {
-      $log->error("Could not apply migration " . $this->getName());
+      $log->error("Could not apply migration " . $this->getName() . ": " . $db->lastError());
       throw new DbException("Could not apply migration " . $this->getName());
     }
 
