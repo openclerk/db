@@ -50,6 +50,18 @@ class Migration {
   }
 
   /**
+   * Get all our parent {@link Migration}s along with all of its parents migrations
+   * into one unique array.
+   */
+  function getAllParents() {
+    $result = array($this->getName() => $this);
+    foreach ($this->getParents() as $parent) {
+      $result += $parent->getAllParents();
+    }
+    return $result;
+  }
+
+  /**
    * Install the current migration and any parent migrations that this migration depends on.
    */
   function install(Connection $db, Logger $log) {
