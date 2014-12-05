@@ -94,6 +94,23 @@ class Migration {
   }
 
   /**
+   * @return true if this migration, or any of its parents, have pending migrations
+   */
+  function hasPending(Connection $db) {
+    if (!$this->isApplied($db)) {
+      return true;
+    }
+
+    foreach ($this->getParents() as $parent) {
+      if ($parent->hasPending($db)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Apply only the current migration.
    * @return true on success or false on failure
    */
