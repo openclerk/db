@@ -47,6 +47,10 @@ class Connection {
     return $this->pdo;
   }
 
+  function lastInsertId() {
+    return $this->getPDO()->lastInsertId();
+  }
+
   // TODO setAttribute()
 
 }
