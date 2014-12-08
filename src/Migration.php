@@ -81,11 +81,16 @@ class Migration {
     }
 
     // and then install our own
-    if ($this->apply($db)) {
-      $log->log("Applied migration " . $this->getName());
-    } else {
-      $log->error("Could not apply migration " . $this->getName() . ": " . $db->lastError());
-      throw new DbException("Could not apply migration " . $this->getName());
+    try {
+      if ($this->apply($db)) {
+        $log->log("Applied migration " . $this->getName());
+      } else {
+        $log->error("Could not apply migration '" . $this->getName() . "': " . $db->lastError());
+        throw new DbException("Could not apply migration " . $this->getName());
+      }
+    } catch (DbException $e) {
+      $log->error("Could not apply migration '" . $this->getName() . "': " . $e->getMessage());
+      throw new DbException("Could not apply migration " . $this->getName(), $e);
     }
 
     // save migration status
