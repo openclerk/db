@@ -8,6 +8,7 @@ namespace Db;
 class BaseMigration extends Migration {
 
   /**
+   * Override the default function to check that a table exists.
    * @return true if this migration is applied
    */
   function isApplied(Connection $db) {
