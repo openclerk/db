@@ -3,9 +3,26 @@ openclerk/db
 
 A library for Database management in Openclerk.
 
+## Installing
+
+Include `openclerk/db` as a requirement in your project `composer.json`,
+and run `composer update` to install it into your project:
+
+```json
+{
+  "require": {
+    "openclerk/db": "dev-master"
+  },
+  "repositories": [{
+    "type": "vcs",
+    "url": "https://github.com/openclerk/db"
+  }]
+}
+```
+
 ## Using
 
-Use [component-discovery](https://github.com/soundasleep/component-discovery) to enable 
+Use [component-discovery](https://github.com/soundasleep/component-discovery) to enable
 discovery of migrations across all of your dependencies. Update your `discovery.json`:
 
 ```json
