@@ -11,7 +11,7 @@ namespace Db;
  * TODO maybe create a subclass SwitchingConnection that can switch as necessary?
  *   we can then put initialisation in the __construct
  */
-class Connection {
+class Connection implements \Serializable {
 
   var $pdo = null;
 
@@ -49,6 +49,21 @@ class Connection {
 
   function lastInsertId() {
     return $this->getPDO()->lastInsertId();
+  }
+
+  /**
+   * We implement {@link Serializable} so that this can be used in a serialized
+   * exception argument.
+   */
+  function serialize() {
+    return serialize($this->database);
+  }
+
+  /**
+   * @throws Exception since unserialize() is not supported on this object
+   */
+  function unserialize($ser) {
+    throw new \Exception("\Db\Connection can not be unserialized");
   }
 
   // TODO setAttribute()

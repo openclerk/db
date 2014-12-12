@@ -5,7 +5,7 @@ namespace Db;
 /**
  * Represents an instance of a query, which can be executed and results fetched.
  */
-class Query {
+class Query implements \Serializable {
 
   var $connection;
   var $query;
@@ -52,6 +52,21 @@ class Query {
       throw new DbException("Query must be executed first");
     }
     return $this->cursor->fetchAll();
+  }
+
+  /**
+   * We implement {@link Serializable} so that this can be used in a serialized
+   * exception argument.
+   */
+  function serialize() {
+    return serialize($this->query);
+  }
+
+  /**
+   * @throws Exception since unserialize() is not supported on this object
+   */
+  function unserialize($ser) {
+    throw new \Exception("\Db\Query can not be unserialized");
   }
 
 }
