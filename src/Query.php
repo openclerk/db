@@ -26,7 +26,17 @@ class Query {
     if ($this->cursor->execute($args)) {
       return true;
     } else {
-      throw new DbException(implode(": ", $this->cursor->errorInfo()));
+      $errorInfo = $this->cursor->errorInfo();
+      $errorResult = array();
+      foreach ($errorInfo as $key) {
+        if ($key) {
+          $errorResult[] = $key;
+        }
+      }
+      if (!$errorResult) {
+        $errorResult = array("(no error code)");
+      }
+      throw new DbException(implode(": ", $errorResult));
     }
   }
 
