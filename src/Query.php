@@ -31,10 +31,16 @@ class Query {
   }
 
   function fetch() {
+    if ($this->cursor === null) {
+      throw new DbException("Query must be executed first");
+    }
     return $this->cursor->fetch();
   }
 
   function fetchAll() {
+    if ($this->cursor === null) {
+      throw new DbException("Query must be executed first");
+    }
     return $this->cursor->fetchAll();
   }
 
