@@ -14,6 +14,7 @@ namespace Db;
 class Connection implements \Serializable {
 
   var $pdo = null;
+  var $database = null;
 
   function __construct($database, $username, $password, $host = "localhost", $port = 3306, $timezone = false) {
     // lazily store these settings for later (in getPDO())
@@ -32,10 +33,7 @@ class Connection implements \Serializable {
 
   function getPDO() {
     if ($this->pdo === null) {
-      // TODO escape string
-      // TODO add port number
-      // TODO not assume that all Db's are MySQL
-      $dsn = "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->database;
+      $dsn = $this->getDSN();
       $this->pdo = new \PDO($dsn, $this->username, $this->password);
 
       // set timezone if set
@@ -47,6 +45,13 @@ class Connection implements \Serializable {
     return $this->pdo;
   }
 
+  function getDSN() {
+    // TODO escape string
+    // TODO add port number
+    // TODO not assume that all Db's are MySQL
+    return "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->database;
+  }
+
   function lastInsertId() {
     return $this->getPDO()->lastInsertId();
   }
@@ -56,7 +61,7 @@ class Connection implements \Serializable {
    * exception argument.
    */
   function serialize() {
-    return serialize($this->database);
+    return serialize($this->getDSN());
   }
 
   /**
