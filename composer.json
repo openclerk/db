@@ -1,5 +1,8 @@
 {
   "name": "openclerk/db",
+  "require": {
+    "openclerk/events": "dev-master"
+  },
   "autoload": {
     "psr-4": {
       "Db\\": "src"

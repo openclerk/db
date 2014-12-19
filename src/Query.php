@@ -2,6 +2,8 @@
 
 namespace Db;
 
+use \Openclerk\Events;
+
 /**
  * Represents an instance of a query, which can be executed and results fetched.
  */
@@ -22,8 +24,14 @@ class Query implements \Serializable {
    * @throws DbException on error with {@link PDOStatement#errorInfo()}.
    */
   function execute($args = array()) {
+    Events::trigger('db_prepare_start', $this->query);
     $this->cursor = $this->connection->getPDO()->prepare($this->query);
-    if ($this->cursor->execute($args)) {
+    Events::trigger('db_prepare_end', $this->query);
+
+    Events::trigger('db_execute_start', $this->query);
+    $result = $this->cursor->execute($args);
+    Events::trigger('db_execute_end', $this->query);
+    if ($result) {
       return true;
     } else {
       $errorInfo = $this->cursor->errorInfo();
@@ -44,14 +52,24 @@ class Query implements \Serializable {
     if ($this->cursor === null) {
       throw new DbException("Query must be executed first");
     }
-    return $this->cursor->fetch();
+
+    Events::trigger('db_fetch_start', $this->query);
+    $result = $this->cursor->fetch();
+    Events::trigger('db_fetch_end', $this->query);
+
+    return $result;
   }
 
   function fetchAll() {
     if ($this->cursor === null) {
       throw new DbException("Query must be executed first");
     }
-    return $this->cursor->fetchAll();
+
+    Events::trigger('db_fetchall_start', $this->query);
+    $result = $this->cursor->fetchAll();
+    Events::trigger('db_fetchall_end', $this->query);
+
+    return $result;
   }
 
   /**
