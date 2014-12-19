@@ -65,9 +65,9 @@ class Query implements \Serializable {
       throw new DbException("Query must be executed first");
     }
 
-    Events::trigger('db_fetchall_start', $this->query);
+    Events::trigger('db_fetch_all_start', $this->query);
     $result = $this->cursor->fetchAll();
-    Events::trigger('db_fetchall_end', $this->query);
+    Events::trigger('db_fetch_all_end', $this->query);
 
     return $result;
   }
