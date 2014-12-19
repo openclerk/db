@@ -46,7 +46,7 @@ Configure your database connection, optionally through a helper function `db()`
 
 ```php
 function db() {
-  return new \Db\Connection(
+  return new \Db\SoloConnection(
     Openclerk\Config::get("database_name"),
     Openclerk\Config::get("database_username"),
     Openclerk\Config::get("database_password")
@@ -70,3 +70,21 @@ if ($migrations->hasPending(db())) {
   $migrations->install(db(), $logger);
 }
 ```
+
+## Replication
+
+You can also define replication connections which are selected based on the type of query,
+and whether that table has recently been updated in the current $_SESSION:
+
+```php
+function db() {
+  return new \Db\ReplicatedConnection(
+    Openclerk\Config::get("database_host_master"),
+    Openclerk\Config::get("database_host_slave"),
+    Openclerk\Config::get("database_name"),
+    Openclerk\Config::get("database_username"),
+    Openclerk\Config::get("database_password")
+  );
+}
+```
+

@@ -87,4 +87,8 @@ class Query implements \Serializable {
     throw new \Exception("\Db\Query can not be unserialized");
   }
 
+  function getConnection() {
+    return $this->connection;
+  }
+
 }
