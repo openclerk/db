@@ -30,6 +30,8 @@ class SoloConnection implements Connection {
       $dsn = $this->getDSN();
       $this->pdo = new \PDO($dsn, $this->username, $this->password);
 
+      $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
       // set timezone if set
       if ($this->timezone) {
         $q = $this->prepare("SET timezone=?");
