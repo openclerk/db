@@ -129,14 +129,12 @@ class ReplicatedConnection implements Connection {
     throw new \Exception("\Db\Connection can not be unserialized");
   }
 
-  var $flags = array();
-
-  function addFlag($key, $value) {
-    $this->flags[$key] = $value;
+  function getMaster() {
+    return $this->master;
   }
 
-  function getFlag($key) {
-    return $this->flags[$key];
+  function getSlave() {
+    return $this->slave;
   }
 
 }

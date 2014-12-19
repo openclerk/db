@@ -35,7 +35,9 @@ class SoloConnection implements Connection {
       // set timezone if set
       if ($this->timezone) {
         $q = $this->prepare("SET timezone=?");
-        $q->execute(array($this->timezone));
+        if (!$q->execute(array($this->timezone))) {
+          throw new DbException("Could not set timezone on '$dsn'");
+        }
       }
     }
     return $this->pdo;
@@ -43,7 +45,6 @@ class SoloConnection implements Connection {
 
   function getDSN() {
     // TODO escape string
-    // TODO add port number
     // TODO not assume that all Db's are MySQL
     return "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->database;
   }
