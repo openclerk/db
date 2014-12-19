@@ -78,7 +78,7 @@ class ReplicatedConnection implements Connection {
    * NOTE this is a very simple implementation
    * @return false if there is any chance the given query is a write (UPDATE, SELECT, INSERT) query.
    */
-  function isWriteQuery($query) {
+  static function isWriteQuery($query) {
     $q = " " . strtolower(preg_replace("/\\s/i", " ", $query));
     return strpos($q, " update ") !== false ||
       strpos($q, " insert ") !== false ||
