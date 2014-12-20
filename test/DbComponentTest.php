@@ -3,7 +3,7 @@
 class DbComponentTest extends \ComponentTests\ComponentTest {
 
   function getRoots() {
-    return array(__DIR__);
+    return array(__DIR__ . "/..");
   }
 
 }
