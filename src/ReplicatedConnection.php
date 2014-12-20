@@ -111,6 +111,9 @@ class ReplicatedConnection implements Connection {
   }
 
   function lastInsertId() {
+    if (!$this->lastConnection === null) {
+      throw new DbException("There is no last connection to retrieve a lastInsertId from");
+    }
     return $this->lastConnection->getPDO()->lastInsertId();
   }
 
