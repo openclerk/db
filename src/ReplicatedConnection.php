@@ -37,7 +37,7 @@ class ReplicatedConnection implements Connection {
   function trimSessionData() {
     foreach ($_SESSION['master_slave_data'] as $table => $last_updated) {
       if ($last_updated < time() - 60) {
-        unset($_SESSION[$table]);
+        unset($_SESSION['master_slave_data'][$table]);
       }
     }
   }
