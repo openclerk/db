@@ -2,6 +2,8 @@
 
 namespace Db;
 
+use \Openclerk\Events;
+
 /**
  * Represents a database that stores the state of updated tables, and uses
  * either replicated database hosts based on the type of query.
@@ -53,9 +55,11 @@ class ReplicatedConnection implements Connection {
       }
 
       $this->lastConnection = $this->master;
+      Events::trigger('db_prepare_master', $query);
       return new ReplicatedQuery($this->master, $query, true);
     } else {
       $this->lastConnection = $this->slave;
+      Events::trigger('db_prepare_slave', $query);
       return new ReplicatedQuery($this->slave, $query, false);
     }
   }
