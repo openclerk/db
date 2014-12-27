@@ -82,7 +82,11 @@ class ReplicatedConnection implements Connection {
     $q = " " . strtolower(preg_replace("/\\s/i", " ", $query));
     return strpos($q, " update ") !== false ||
       strpos($q, " insert ") !== false ||
-      strpos($q, " delete ") !== false;
+      strpos($q, " delete ") !== false ||
+      strpos($q, " create table ") !== false ||
+      strpos($q, " alter table ") !== false ||
+      strpos($q, " drop table ") !== false ||
+      strpos($q, " show tables ") !== false;
   }
 
   /**
@@ -95,7 +99,7 @@ class ReplicatedConnection implements Connection {
       throw new DbException("Query '$query' is not a write query");
     }
     $query = " " . strtolower(preg_replace("/\\s+/i", " ", $query));
-    if (preg_match("# (update|delete from|insert into) ([^ ]+) #i", $query, $matches)) {
+    if (preg_match("# (update|delete from|insert into|create table|alter table|drop table) ([^ ;]+)[ ;]#i", $query, $matches)) {
       return $matches[2];
     }
     throw new DbException("Could not identify table for query '$query'");

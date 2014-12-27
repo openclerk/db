@@ -174,4 +174,24 @@ class ReplicatedTest extends PHPUnit_Framework_TestCase {
 
   }
 
+  function testCreateThenSelect() {
+    $q = $this->db->prepare("CREATE TABLE test_table (
+      id int not null auto_increment primary key,
+      name varchar(255) not null,
+      created_at timestamp not null default current_timestamp,
+
+      INDEX(name)
+    );");
+    $q->execute();
+
+    $this->selectUsesMaster(true);
+  }
+
+  function testDropTableThenSelect() {
+    $q = $this->db->prepare("DROP TABLE test_table;");
+    $q->execute();
+
+    $this->selectUsesMaster(true);
+  }
+
 }

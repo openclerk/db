@@ -13,6 +13,9 @@ class IsWriteQueryTest extends PHPUnit_Framework_TestCase {
       "insert\ninto foo values(null)",
       "\ninsert into foo values(null)",
       "UPDATE jobs SET meow=?",
+      "drop table foo",
+      "create table foo (keys)",
+      "SHOW TABLES LIKE ?",     // this should always use the most recent database too
     );
     foreach ($queries as $q) {
       $this->assertTrue(ReplicatedConnection::isWriteQuery($q), "'$q' should be a write query");
