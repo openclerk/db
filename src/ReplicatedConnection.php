@@ -79,7 +79,7 @@ class ReplicatedConnection implements Connection {
    * @return false if there is any chance the given query is a write (UPDATE, SELECT, INSERT) query.
    */
   static function isWriteQuery($query) {
-    $q = " " . strtolower(preg_replace("/\\s/i", " ", $query));
+    $q = " " . strtolower(preg_replace("/\\s/i", " ", $query)) . " ";
     return strpos($q, " update ") !== false ||
       strpos($q, " insert ") !== false ||
       strpos($q, " delete ") !== false ||
@@ -94,13 +94,16 @@ class ReplicatedConnection implements Connection {
    * @return the table name, in lowercase, from the given query
    * @throws DbException if this is not a write query.
    */
-  function getTable($query) {
-    if (!$this->isWriteQuery($query)) {
+  static function getTable($query) {
+    if (!self::isWriteQuery($query)) {
       throw new DbException("Query '$query' is not a write query");
     }
-    $query = " " . strtolower(preg_replace("/\\s+/i", " ", $query));
+    $query = " " . strtolower(preg_replace("/\\s+/i", " ", $query)) . " ";
     if (preg_match("# (update|delete from|insert into|create table|alter table|drop table) ([^ ;]+)[ ;]#i", $query, $matches)) {
       return $matches[2];
+    }
+    if (preg_match("# (show tables) #i", $query, $matches)) {
+      return "global";
     }
     throw new DbException("Could not identify table for query '$query'");
   }

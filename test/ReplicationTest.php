@@ -194,4 +194,11 @@ class ReplicatedTest extends PHPUnit_Framework_TestCase {
     $this->selectUsesMaster(true);
   }
 
+  function testShowTablesLike() {
+    $q = $this->db->prepare("SHOW TABLES LIKE ?");
+    $q->execute();
+
+    $this->selectUsesMaster(false);
+  }
+
 }
