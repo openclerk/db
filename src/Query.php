@@ -91,4 +91,8 @@ class Query implements \Serializable {
     return $this->connection;
   }
 
+  function rowCount() {
+    return $this->cursor->rowCount();
+  }
+
 }
