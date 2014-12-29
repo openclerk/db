@@ -126,4 +126,19 @@ class Migration {
     return true;
   }
 
+  /**
+   * Used e.g. in BaseMigration
+   * @return true if the given table exists
+   */
+  function tableExists(Connection $db, $table) {
+    $q = $db->prepare("SHOW TABLES LIKE ?");
+    $q->execute(array($table));
+
+    if ($q->fetch()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

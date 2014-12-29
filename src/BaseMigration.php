@@ -12,14 +12,7 @@ class BaseMigration extends Migration {
    * @return true if this migration is applied
    */
   function isApplied(Connection $db) {
-    $q = $db->prepare("SHOW TABLES LIKE ?");
-    $q->execute(array("migrations"));
-
-    if ($q->fetch()) {
-      return true;
-    } else {
-      return false;
-    }
+    return $this->tableExists($db, "migrations");
   }
 
   /**
