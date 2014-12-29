@@ -2,6 +2,8 @@
 
 namespace Db;
 
+use \Monolog\Logger;
+
 /**
  * Represents a database "migration", which can be composed together with other
  * migrations across multiple components to initialise a database and update it
@@ -83,7 +85,7 @@ class Migration {
     // and then install our own
     try {
       if ($this->apply($db)) {
-        $log->log("Applied migration " . $this->getName());
+        $log->info("Applied migration " . $this->getName());
       } else {
         $log->error("Could not apply migration '" . $this->getName() . "': " . $db->lastError());
         throw new DbException("Could not apply migration " . $this->getName());
