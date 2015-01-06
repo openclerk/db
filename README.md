@@ -57,7 +57,7 @@ function db() {
 Load them up and optionally install them at runtime:
 
 ```php
-$logger = new \Db\Logger();
+$logger = new \Monolog\Logger('name');
 
 class AllMigrations extends \Db\Migration {
   function getParents() {
