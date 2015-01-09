@@ -90,7 +90,8 @@ class ReplicatedConnection implements Connection {
       strpos($q, " create table ") !== false ||
       strpos($q, " alter table ") !== false ||
       strpos($q, " drop table ") !== false ||
-      strpos($q, " show tables ") !== false;
+      strpos($q, " show tables ") !== false ||
+      strpos($q, " from migrations ") !== false;
   }
 
   /**
@@ -105,6 +106,9 @@ class ReplicatedConnection implements Connection {
     $query = " " . strtolower(preg_replace("/\\s+/i", " ", $query)) . " ";
     if (preg_match("# (update|delete from|insert into|create table|alter table|drop table) ([^ ;]+)[ ;]#i", $query, $matches)) {
       return $matches[2];
+    }
+    if (preg_match("# from migrations #i", $query, $matches)) {
+      return "migrations";
     }
     if (preg_match("# (show tables) #i", $query, $matches)) {
       return "global";

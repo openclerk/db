@@ -15,6 +15,8 @@ class IsWriteQueryTest extends PHPUnit_Framework_TestCase {
     "drop table foo",
     "create table foo (keys)",
     "SHOW TABLES LIKE ?",     // this should always use the most recent database too
+    "select * from migrations",
+    "select id from migrations where 1",
   );
 
   var $read_queries = array(
