@@ -69,6 +69,7 @@ class Migration {
   function install(Connection $db, Logger $log) {
     // bail if we've already applied
     if ($this->isApplied($db)) {
+      $log->info("Skipping " . $this->getName() . ": already applied");
       return;
     }
 
@@ -84,6 +85,7 @@ class Migration {
 
     // and then install our own
     try {
+      $log->info("Applying " . $this->getName());
       if ($this->apply($db)) {
         $log->info("Applied migration " . $this->getName());
       } else {
