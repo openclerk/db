@@ -137,7 +137,7 @@ class ReplicatedConnection implements Connection {
    * exception argument.
    */
   function serialize() {
-    return serialize($this->getDSN());
+    return serialize("[master: " . $this->getMaster()->getDSN() . ", slave: " . $this->getSlave()->getDSN() . "]");
   }
 
   /**
