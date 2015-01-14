@@ -2,7 +2,7 @@
   "name": "openclerk/db",
   "description": "Simple PHP database management",
   "require": {
-    "openclerk/events": "~0.1",
+    "openclerk/events": "dev-master",
     "monolog/monolog": "~1.11"
   },
   "autoload": {
