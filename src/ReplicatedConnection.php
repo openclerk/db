@@ -64,7 +64,17 @@ class ReplicatedConnection implements Connection {
     }
   }
 
+  /**
+   * Returns true if one of the following situations is true:
+   * - {@code USE_MASTER_DB} is defined and true
+   * - the query is a write query: {@link #isWriteQuery()}
+   * - this session has recently updated the table used in this query
+   */
   function shouldUseMaster($query) {
+    if (defined('USE_MASTER_DB') && USE_MASTER_DB) {
+      return true;
+    }
+
     if ($this->isWriteQuery($query)) {
       return true;
     }
