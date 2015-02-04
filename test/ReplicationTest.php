@@ -10,6 +10,10 @@ class TestReplicatedConnection extends ReplicatedConnection {
     $this->slave = new TestConnection();
   }
 
+  function throwException() {
+    throw new Exception();
+  }
+
 }
 
 class TestConnection implements Connection {
@@ -18,9 +22,12 @@ class TestConnection implements Connection {
     throw new \Exception("Should not call TestConnection::prepare()");
   }
 
-  // TODO setAttribute()
   function getPDO() {
     return new TestPDO();
+  }
+
+  function getDSN() {
+    return "[TestConnection]";
   }
 
   function lastInsertId() {
@@ -199,6 +206,20 @@ class ReplicatedTest extends PHPUnit_Framework_TestCase {
     $q->execute();
 
     $this->selectUsesMaster(false);
+  }
+
+  function testCanSerializeException() {
+    try {
+      $this->db->throwException();
+      $this->fail("Expected exception to throw");
+    } catch (\Exception $e) {
+      // should be OK
+      serialize($e);
+    }
+  }
+
+  function testCanSerializeDb() {
+    serialize($this->db);
   }
 
 }
