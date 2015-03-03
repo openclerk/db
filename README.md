@@ -88,3 +88,12 @@ function db() {
 }
 ```
 
+## Events
+
+A number of [events](https://github.com/openclerk/events) are triggered by the library,
+and can be captured for [metrics](https://github.com/openclerk/metrics):
+
+* `db_prepare_start`, `db_prepare_end`, `db_prepare_master`, `db_prepare_slave`
+* `db_execute_start`, `db_execute_end`
+* `db_fetch_start`, `db_fetch_end`
+* `db_fetch_all_start`, `db_fetch_all_end`
