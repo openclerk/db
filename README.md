@@ -1,7 +1,7 @@
 openclerk/db [![Build Status](https://travis-ci.org/openclerk/db.svg?branch=master)](https://travis-ci.org/openclerk/db)
 ============
 
-A library for Database management in Openclerk.
+A library for MySQL database management in Openclerk, supporting connection abstraction and automated replication switching.
 
 ## Installing
 
