@@ -1,4 +1,4 @@
-openclerk/db
+openclerk/db [![Build Status](https://travis-ci.org/openclerk/db.svg?branch=master)](https://travis-ci.org/openclerk/db)
 ============
 
 A library for Database management in Openclerk.
@@ -12,11 +12,7 @@ and run `composer update` to install it into your project:
 {
   "require": {
     "openclerk/db": "dev-master"
-  },
-  "repositories": [{
-    "type": "vcs",
-    "url": "https://github.com/openclerk/db"
-  }]
+  }
 }
 ```
 
