@@ -1,7 +1,7 @@
 openclerk/db [![Build Status](https://travis-ci.org/openclerk/db.svg?branch=master)](https://travis-ci.org/openclerk/db)
 ============
 
-A library for MySQL database management in Openclerk, supporting connection abstraction and automated replication switching.
+A library for MySQL database management in Openclerk, supporting migrations, connection abstraction and automated replication switching.
 
 ## Installing
 
@@ -41,11 +41,13 @@ Configure your database connection, optionally through a helper function `db()`
 (see also [openclerk/config](https://github.com/openclerk/config) project):
 
 ```php
+use \Openclerk\Config;
+
 function db() {
   return new \Db\SoloConnection(
-    Openclerk\Config::get("database_name"),
-    Openclerk\Config::get("database_username"),
-    Openclerk\Config::get("database_password")
+    Config::get("database_name"),
+    Config::get("database_username"),
+    Config::get("database_password")
   );
 }
 ```
@@ -67,6 +69,10 @@ if ($migrations->hasPending(db())) {
 }
 ```
 
+Migrations can be [discovered and loaded at runtime](https://github.com/soundasleep/component-discovery) with a `migrations.json`.
+
+You can also generate migrations at runtime, for example [generating a table for each Currency discovered at runtime](https://github.com/soundasleep/openclerk/blob/master/core/Migrations/BlockCountMigrationGenerator.php).
+
 ## Replication
 
 You can also define replication connections which are selected based on the type of query,
@@ -75,11 +81,11 @@ and whether that table has recently been updated in the current $_SESSION:
 ```php
 function db() {
   return new \Db\ReplicatedConnection(
-    Openclerk\Config::get("database_host_master"),
-    Openclerk\Config::get("database_host_slave"),
-    Openclerk\Config::get("database_name"),
-    Openclerk\Config::get("database_username"),
-    Openclerk\Config::get("database_password")
+    Config::get("database_host_master"),
+    Config::get("database_host_slave"),
+    Config::get("database_name"),
+    Config::get("database_username"),
+    Config::get("database_password")
   );
 }
 ```
