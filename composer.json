@@ -1,17 +1,16 @@
 {
   "name": "openclerk/db",
   "description": "Simple PHP database management",
-  "require": {
-    "openclerk/events": "dev-master",
-    "monolog/monolog": "~1.11"
-  },
   "autoload": {
     "psr-4": {
       "Db\\": "src"
     }
   },
+  "require": {
+    "openclerk/events": "dev-master",
+    "monolog/monolog": "~1.11"
+  },
   "require-dev": {
-    "phpunit/phpunit": "~4.4",
-    "soundasleep/component-tests": "~0.1"
+    "soundasleep/component-tests": "dev-master"
   }
 }
