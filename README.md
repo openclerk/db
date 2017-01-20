@@ -11,7 +11,7 @@ and run `composer update` to install it into your project:
 ```json
 {
   "require": {
-    "openclerk/db": "dev-master"
+    "openclerk/db": "^0.1"
   }
 }
 ```
